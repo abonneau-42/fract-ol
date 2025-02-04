@@ -1,0 +1,12 @@
+{
+	"files.associations": {
+		"fractol.h": "c",
+		"random": "c",
+		"stdio.h": "c",
+		"mlx.h": "c",
+		"omp.h": "c",
+		"complex.h": "c",
+		"stdlib.h": "c",
+		"unistd.h": "c"
+	}
+}
