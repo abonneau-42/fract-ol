@@ -6,7 +6,7 @@
 /*   By: abonneau <abonneau@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 09:32:46 by abonneau          #+#    #+#             */
-/*   Updated: 2025/02/05 17:29:36 by abonneau         ###   ########.fr       */
+/*   Updated: 2025/02/05 18:14:37 by abonneau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,21 +97,20 @@ static double fast_cabs(double complex z)
     return (x > y) ? (x + y * 0.5) : (y + x * 0.5);
 }
 
-static void my_mlx_pixel_put(t_data *data, int x, int y, int color)
+static void my_mlx_pixel_put(t_data *data, int x, int y, unsigned int color)
 {
     *(unsigned int*)(data->addr + (y * data->line_length + x * (data->bits_per_pixel >> 3))) = color;
 }
 
-static int find_color(const float x0, const float y0)
+static unsigned int find_color(const float x0, const float y0)
 {
-    double old_zx;
-    double old_zy;
     int iter;
     double complex c;
     double complex z;
+    t_dvector old_z;
+    t_dvector old_z2;
     
-    old_zx = 0.0;
-    old_zy = 0.0;
+    old_z = (t_dvector){.x = 0.0, .y=0.0};
     iter = 0;
     c = x0 + y0 * I;
     z = 0;
@@ -119,21 +118,23 @@ static int find_color(const float x0, const float y0)
     {
         z = z * z + c;
         iter++;
-        if (iter % 10 == 0) {
-            if (fabs(creal(z) - old_zx) < 1e-6 && fabs(cimag(z) - old_zy) < 1e-6) {
+        if (iter % 10 == 0)
+        {
+            old_z2 = (t_dvector){.x = creal(z), .y = cimag(z)}; 
+            if (fabs(old_z2.x - old_z.x) < 1e-6 && fabs(old_z2.y - old_z.y) < 1e-6) {
                 iter = MAX_ITER;
                 break;
             }
-            old_zx = creal(z);
-            old_zy = cimag(z);
+            old_z.x = old_z2.x;
+            old_z.y = old_z2.y;
         }
     }
-    return ((MAX_ITER - iter) * 16581375 / MAX_ITER);
+    return ((MAX_ITER - iter) * COLOR_RANGE);
 }
 
 static t_cache set_point_in_cache(t_vars *ctx, t_cache cache)
 {
-    const t_dvector offset = {
+    const t_fvector offset = {
         .x = (ctx->zoom_x > 0) ? ctx->zoom_x * MANDELBROT_XMIN : -(ctx->zoom_x * MANDELBROT_XMAX),
         .y = 1.5 * ctx->zoom_y
     };
@@ -155,7 +156,7 @@ static t_cache set_point_in_cache(t_vars *ctx, t_cache cache)
 }
 
 
-static int optimise_render(size_t px, size_t py, t_cache cache, t_vars *ctx)
+static int optimise_render(unsigned int px, unsigned int py, t_cache cache, t_vars *ctx)
 {   
     const float x0 = cache.cached_x[px];
     const float y0 = cache.cached_y[py];
@@ -181,8 +182,8 @@ void* mandelbrot_thread(void* arg)
 {
     t_thread_data   *data = (t_thread_data*)arg;
     t_vars* ctx = data->ctx;
-    size_t px;
-    size_t py;
+    unsigned int px;
+    unsigned int py;
     t_cache cache;
 
     cache = set_point_in_cache(ctx, cache);
