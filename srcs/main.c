@@ -6,7 +6,7 @@
 /*   By: abonneau <abonneau@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 07:48:48 by abonneau          #+#    #+#             */
-/*   Updated: 2025/02/05 16:16:14 by abonneau         ###   ########.fr       */
+/*   Updated: 2025/02/05 19:40:38 by abonneau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,7 @@ int	key_hook(int keycode, t_vars *ctx)
 	return (0);
 }
 
-int mouse_hook(int mousecode, int x, int y, t_vars *ctx)
+int mouse_hook(int mousecode, int x, int y, t_keyboard *keyboard)
 {
 	(void)x;
 	(void)y;
@@ -103,8 +103,13 @@ int mouse_hook(int mousecode, int x, int y, t_vars *ctx)
 		ctx->zoom_x = last_x;
 		ctx->zoom_y = last_y;
     }
-	redraw(ctx);
-    return 0;
+
+	if (mousecode == 4)
+		keyboard->scrollmouseup = 4;
+	if (mousecode == 5)
+		keyboard->scrollmousedown = 5;
+	keyboard->cursor = (t_vector){.x = x, .y = y};
+    return (0);
 }
 
 int	check_number(char *chr, t_vars *ctx, int index)
@@ -120,6 +125,11 @@ int	check_number(char *chr, t_vars *ctx, int index)
 		return (0);
 	ctx->params[index] = value;
 	return (1);
+}
+
+void	render(t_vars *ctx)
+{
+	
 }
 
 int	main(int argc, char **argv)
@@ -166,8 +176,10 @@ int	main(int argc, char **argv)
 	// draw_axis(&ctx);
 	mlx_put_image_to_window(ctx.mlx, ctx.win, ctx.img.img, 0, 0);
 	mlx_key_hook(ctx.win, key_hook, &ctx);
-	mlx_mouse_hook(ctx.win, mouse_hook, &ctx);
+	mlx_mouse_hook(ctx.win, mouse_hook, &ctx.keyboard);
 	mlx_hook(ctx.win, 17, 0, close_window, &ctx);
+
+	mlx_loop_hook(ctx.mlx, render, &ctx);
 	mlx_loop(ctx.mlx);
 }
 

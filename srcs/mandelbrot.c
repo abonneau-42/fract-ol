@@ -6,7 +6,7 @@
 /*   By: abonneau <abonneau@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 09:32:46 by abonneau          #+#    #+#             */
-/*   Updated: 2025/02/05 18:14:37 by abonneau         ###   ########.fr       */
+/*   Updated: 2025/02/05 18:36:49 by abonneau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,21 +90,21 @@
 //     return 0;
 // }
 
-static double fast_cabs(double complex z)
+static double fast_cabs(t_dvector z)
 {
-    const double x = fabs(creal(z));
-    const double y = fabs(cimag(z));
-    return (x > y) ? (x + y * 0.5) : (y + x * 0.5);
+    const double x_abs = fabs(z.x);
+    const double y_abs = fabs(z.y);
+    return (x_abs > y_abs) ? (x_abs + y_abs * 0.5) : (y_abs + x_abs * 0.5);
 }
 
-static void my_mlx_pixel_put(t_data *data, int x, int y, unsigned int color)
+static void my_mlx_pixel_put(t_data *data, unsigned int x, unsigned int y, unsigned int color)
 {
     *(unsigned int*)(data->addr + (y * data->line_length + x * (data->bits_per_pixel >> 3))) = color;
 }
 
 static unsigned int find_color(const float x0, const float y0)
 {
-    int iter;
+    unsigned int iter;
     double complex c;
     double complex z;
     t_dvector old_z;
@@ -114,14 +114,16 @@ static unsigned int find_color(const float x0, const float y0)
     iter = 0;
     c = x0 + y0 * I;
     z = 0;
-    while (fast_cabs(z) <= 2.0 && iter < MAX_ITER)
+    old_z2 = (t_dvector){.x = creal(z), .y = cimag(z)};
+    while (fast_cabs(old_z2) <= 2.0 && iter < MAX_ITER)
     {
         z = z * z + c;
         iter++;
+        old_z2 = (t_dvector){.x = creal(z), .y = cimag(z)};
         if (iter % 10 == 0)
-        {
-            old_z2 = (t_dvector){.x = creal(z), .y = cimag(z)}; 
-            if (fabs(old_z2.x - old_z.x) < 1e-6 && fabs(old_z2.y - old_z.y) < 1e-6) {
+        { 
+            if (fabs(old_z2.x - old_z.x) < 1e-6 && fabs(old_z2.y - old_z.y) < 1e-6)
+            {
                 iter = MAX_ITER;
                 break;
             }
