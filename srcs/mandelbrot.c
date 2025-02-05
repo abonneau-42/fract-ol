@@ -6,7 +6,7 @@
 /*   By: abonneau <abonneau@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 09:32:46 by abonneau          #+#    #+#             */
-/*   Updated: 2025/02/05 04:04:02 by abonneau         ###   ########.fr       */
+/*   Updated: 2025/02/05 17:29:36 by abonneau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,8 +92,8 @@
 
 static double fast_cabs(double complex z)
 {
-    double x = fabs(creal(z));
-    double y = fabs(cimag(z));
+    const double x = fabs(creal(z));
+    const double y = fabs(cimag(z));
     return (x > y) ? (x + y * 0.5) : (y + x * 0.5);
 }
 
@@ -102,7 +102,7 @@ static void my_mlx_pixel_put(t_data *data, int x, int y, int color)
     *(unsigned int*)(data->addr + (y * data->line_length + x * (data->bits_per_pixel >> 3))) = color;
 }
 
-static int find_color(double x0, double y0)
+static int find_color(const float x0, const float y0)
 {
     double old_zx;
     double old_zy;
@@ -131,51 +131,48 @@ static int find_color(double x0, double y0)
     return ((MAX_ITER - iter) * 16581375 / MAX_ITER);
 }
 
-static t_cache set_point_in_cache(t_vars *ctx)
+static t_cache set_point_in_cache(t_vars *ctx, t_cache cache)
 {
-    double offset_x = (ctx->zoom_x > 0) ? ctx->zoom_x * MANDELBROT_XMIN : -(ctx->zoom_x * MANDELBROT_XMAX);
-    double offset_y = 1.5 * ctx->zoom_y;
-    int px;
-    int py;
-    t_cache cache;
+    const t_dvector offset = {
+        .x = (ctx->zoom_x > 0) ? ctx->zoom_x * MANDELBROT_XMIN : -(ctx->zoom_x * MANDELBROT_XMAX),
+        .y = 1.5 * ctx->zoom_y
+    };
+    t_vector p;
     
-    px = 0;
-    while (px < SCREEN_WIDTH)
+    p.x = 0;
+    while (p.x < SCREEN_WIDTH)
     {
-        cache.cached_x[px] = MANDELBROT_XMIN + (ctx->center_x + px * ctx->zoom) * MANDELBROT_DX + (ctx->zoom - 1) * 0.5 - offset_x;
-        px++;
+        cache.cached_x[p.x] = MANDELBROT_XMIN + (ctx->center_x + p.x * ctx->zoom) * MANDELBROT_DX + (ctx->zoom - 1) * 0.5 - offset.x;
+        p.x++;
     }
-    py = 0;
-    while (py < SCREEN_HEIGHT)
+    p.y = 0;
+    while (p.y < SCREEN_HEIGHT)
     {
-        cache.cached_y[py] = MANDELBROT_YMIN + (ctx->center_y + py * ctx->zoom) * MANDELBROT_DY + offset_y;
-        py++;
+        cache.cached_y[p.y] = MANDELBROT_YMIN + (ctx->center_y + p.y * ctx->zoom) * MANDELBROT_DY + offset.y;
+        p.y++;
     }
     return (cache);
 }
 
 
-static int optimise_render(int px, int py, t_cache cache, t_vars *ctx)
-{
-    double q;
-    double x0;
-    double y0;
-    
-    x0 = cache.cached_x[px];
-    y0 = cache.cached_y[py];
-    q = (x0 - 0.25) * (x0 - 0.25) + y0 * y0;
-    if (q * (q + (x0 - 0.25)) < 0.25 * y0 * y0) {
+static int optimise_render(size_t px, size_t py, t_cache cache, t_vars *ctx)
+{   
+    const float x0 = cache.cached_x[px];
+    const float y0 = cache.cached_y[py];
+    const float y02 = y0 * y0;
+    const float xv0 = (x0 - 0.25);
+    const float q = xv0 * xv0 + y02;
+    if (q * (q + xv0) < 0.25 * y02)
+    {
         my_mlx_pixel_put(&ctx->img, px, py, 0);
-        px++;
         return (1);
     }
-    if ((x0 + 1) * (x0 + 1) + y0 * y0 < 0.0625) {
+    if ((x0 + 1) * (x0 + 1) + y02 < 0.0625)
+    {
         my_mlx_pixel_put(&ctx->img, px, py, 0);
-        px++;
         return (1);
     }
     my_mlx_pixel_put(&ctx->img, px, py, find_color(x0, y0));
-    px++;
     return (0);
 }
 
@@ -184,11 +181,11 @@ void* mandelbrot_thread(void* arg)
 {
     t_thread_data   *data = (t_thread_data*)arg;
     t_vars* ctx = data->ctx;
-    int px;
-    int py;
+    size_t px;
+    size_t py;
     t_cache cache;
 
-    cache = set_point_in_cache(ctx);
+    cache = set_point_in_cache(ctx, cache);
     py = data->start_row;
     while (py < data->end_row)
     {
@@ -209,7 +206,7 @@ void* mandelbrot_thread(void* arg)
 
 int mandelbrot(t_vars *ctx)
 {
-    pthread_t threads[NUM_THREADS];
+    pthread_t       threads[NUM_THREADS];
     t_thread_data   thread_args[NUM_THREADS];
     int rows_per_thread = SCREEN_HEIGHT / NUM_THREADS;
     

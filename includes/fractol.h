@@ -6,7 +6,7 @@
 /*   By: abonneau <abonneau@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 07:47:17 by abonneau          #+#    #+#             */
-/*   Updated: 2025/02/05 04:03:09 by abonneau         ###   ########.fr       */
+/*   Updated: 2025/02/05 17:20:18 by abonneau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@
 
 # define SCREEN_WIDTH 800
 # define SCREEN_HEIGHT 800
-# define MAX_ITER 1000
+# define MAX_ITER 100
 
 # define KEY_ESC 65307
 
@@ -60,10 +60,10 @@ typedef struct s_vars {
     void            *mlx;
     void            *win;
     float           zoom;
-    double          center_x;
-    double          center_y;
-    double          zoom_x;
-    double          zoom_y;
+    float           center_x;
+    float           center_y;
+    float           zoom_x;
+    float           zoom_y;
     t_fractal_fn    fractal_fn;  // Pointeur vers une fonction de type t_fractal_fn
     double			params[2];   // Paramètres pour Julia ou Mandelbrot
     t_data          img;         // Structure pour l'image
@@ -76,9 +76,21 @@ typedef struct e_thread_data {
 } t_thread_data;
 
 typedef struct s_cache {
-    double cached_x[SCREEN_WIDTH];
-    double cached_y[SCREEN_HEIGHT];
+    float cached_x[SCREEN_WIDTH];
+    float cached_y[SCREEN_HEIGHT];
 } t_cache;
+
+
+typedef struct s_dvector{
+    double x;
+    double y;
+}   t_dvector;
+
+typedef struct s_vector{
+    unsigned int x;
+    unsigned int y;
+}   t_vector;
+
 
 int	mandelbrot(t_vars *ctx);
 int	julia(t_vars *ctx);
