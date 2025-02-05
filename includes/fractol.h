@@ -6,7 +6,7 @@
 /*   By: abonneau <abonneau@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 07:47:17 by abonneau          #+#    #+#             */
-/*   Updated: 2025/02/04 18:29:43 by abonneau         ###   ########.fr       */
+/*   Updated: 2025/02/05 04:03:09 by abonneau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,12 @@
 # include <stdio.h>
 # include <math.h>
 # include <unistd.h>
+# include <stdint.h>
+# include <pthread.h>
 
 # define SCREEN_WIDTH 800
 # define SCREEN_HEIGHT 800
-# define MAX_ITER 100
+# define MAX_ITER 1000
 
 # define KEY_ESC 65307
 
@@ -32,13 +34,15 @@
 # define MANDELBROT_YMIN -1.5
 # define MANDELBROT_YMAX 1.5
 
-# define RATE_MB_X MANDELBROT_XMAX - MANDELBROT_XMIN
-# define RATE_MB_Y MANDELBROT_YMAX - MANDELBROT_YMIN
+# define MANDELBROT_DX ((MANDELBROT_XMAX - MANDELBROT_XMIN) / SCREEN_WIDTH)
+# define MANDELBROT_DY ((MANDELBROT_YMAX - MANDELBROT_YMIN) / SCREEN_HEIGHT)
 
 #define JULIA_XMIN -1.5
 #define JULIA_XMAX 1.5
 #define JULIA_YMIN -1.5
 #define JULIA_YMAX 1.5
+
+#define NUM_THREADS 4
 
 typedef struct s_vars t_vars;
 
@@ -65,6 +69,16 @@ typedef struct s_vars {
     t_data          img;         // Structure pour l'image
 } t_vars;
 
+typedef struct e_thread_data {
+    t_vars *ctx;
+    int start_row;
+    int end_row;
+} t_thread_data;
+
+typedef struct s_cache {
+    double cached_x[SCREEN_WIDTH];
+    double cached_y[SCREEN_HEIGHT];
+} t_cache;
 
 int	mandelbrot(t_vars *ctx);
 int	julia(t_vars *ctx);

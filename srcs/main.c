@@ -6,7 +6,7 @@
 /*   By: abonneau <abonneau@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 07:48:48 by abonneau          #+#    #+#             */
-/*   Updated: 2025/02/04 18:43:22 by abonneau         ###   ########.fr       */
+/*   Updated: 2025/02/05 03:12:23 by abonneau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -226,10 +226,12 @@ int	main(int argc, char **argv)
 		write(1, "./fractol [julia|mandelbrot] [params]\n", 38);
 		return (0);
 	}
-	ctx.zoom = 1.0;
+	// ctx.zoom = 0.005;
+	// ctx.zoom_x = 0.38;
+	ctx.zoom = 1;
+	ctx.zoom_x = 0;
 	ctx.center_x = 0;
 	ctx.center_y = 0;
-	ctx.zoom_x = 0;
 	ctx.zoom_y = 0;
 	ctx.mlx = mlx_init();
 	ctx.win = mlx_new_window(ctx.mlx, SCREEN_WIDTH, SCREEN_HEIGHT, "Hello world!");
