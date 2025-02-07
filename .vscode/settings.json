@@ -7,6 +7,9 @@
 		"omp.h": "c",
 		"complex.h": "c",
 		"stdlib.h": "c",
-		"unistd.h": "c"
+		"unistd.h": "c",
+		"complex": "c",
+		"format": "c",
+		"time.h": "c"
 	}
 }

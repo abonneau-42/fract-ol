@@ -6,19 +6,13 @@
 /*   By: abonneau <abonneau@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 17:23:33 by abonneau          #+#    #+#             */
-/*   Updated: 2025/02/04 18:46:52 by abonneau         ###   ########.fr       */
+/*   Updated: 2025/02/07 17:46:07 by abonneau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fractol.h"
 
 #include "fractol.h"
-
-static double fast_cabs(double complex z) {
-    double x = fabs(creal(z));
-    double y = fabs(cimag(z));
-    return (x > y) ? (x + y * 0.5) : (y + x * 0.5);
-}
 
 static void	my_mlx_pixel_put(t_data *data, int x, int y, int color)
 {
@@ -43,7 +37,6 @@ int julia(t_vars *ctx)
     
     c = ctx->params[0] + ctx->params[1] * I;
 	
-
     double cached_x[SCREEN_WIDTH];
     for (px = 0; px < SCREEN_WIDTH; px++) {
         cached_x[px] = (JULIA_XMIN + (ctx->center_x / SCREEN_WIDTH) * rate_x + px * dx) * ctx->zoom + (ctx->zoom - 1) * 0.5 - offset_x;
@@ -56,10 +49,9 @@ int julia(t_vars *ctx)
             x0 = cached_x[px];
 
             z = x0 + y0 * I;
-
             iter = 0;
 
-            while (fast_cabs(z) <= 2.0 && iter < MAX_ITER) {
+            while (cabs(z) <= 2.0 && iter < MAX_ITER) {
                 z = z * z + c;
                 iter++;
             }

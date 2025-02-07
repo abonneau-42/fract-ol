@@ -6,7 +6,7 @@
 /*   By: abonneau <abonneau@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 09:35:42 by abonneau          #+#    #+#             */
-/*   Updated: 2025/02/04 18:43:56 by abonneau         ###   ########.fr       */
+/*   Updated: 2025/02/07 21:44:50 by abonneau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,4 +120,11 @@ int	ft_strcmp(const char *s1, const char *s2)
 		i++;
 	}
 	return ((unsigned char)s1[i] - (unsigned char)s2[i]);
+}
+
+int ft_abs(int x)
+{
+	if (x < 0)
+		return (-x);
+	return (x);
 }
