@@ -125,7 +125,7 @@ int main() {
     double cr = -0.786;  // Partie réelle de c
     double ci = 0.268;   // Partie imaginaire de c
     double zr = 0.0;   // Partie réelle de z
-    double zi = 0.0;   // Partie imaginaire de z
+    double zi = 0.0;   // Par+tie imaginaire de z
     double temp;
     t_dvector zsqr;
     i = 0;

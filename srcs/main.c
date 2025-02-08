@@ -6,13 +6,13 @@
 /*   By: abonneau <abonneau@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 07:48:48 by abonneau          #+#    #+#             */
-/*   Updated: 2025/02/07 23:27:07 by abonneau         ###   ########.fr       */
+/*   Updated: 2025/02/08 03:10:03 by abonneau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fractol.h"
 
-static void my_mlx_pixel_put(t_data *data, unsigned int x, unsigned int y, unsigned int color)
+static void my_mlx_pixel_put2(t_data *data, unsigned int x, unsigned int y, unsigned int color)
 {
     *(unsigned int*)(data->addr + (y * data->line_length + x * (data->bits_per_pixel >> 3))) = color;
 }
@@ -31,7 +31,7 @@ void draw_axis(t_vars *ctx)
     {
         while (x < SCREEN_WIDTH)
         {
-            my_mlx_pixel_put(&ctx->img, x, axis_y, 0xFFFFFF);
+            my_mlx_pixel_put2(&ctx->img, x, axis_y, 0xFFFFFF);
             x++;
         }
     }
@@ -41,7 +41,7 @@ void draw_axis(t_vars *ctx)
     {
         while (y < SCREEN_HEIGHT)
         {
-            my_mlx_pixel_put(&ctx->img, axis_x, y, 0xFFFFFF);
+            my_mlx_pixel_put2(&ctx->img, axis_x, y, 0xFFFFFF);
             y++;
         }
     }
@@ -60,7 +60,7 @@ void	redraw(t_vars *ctx)
 {
 	mlx_clear_window(ctx->mlx, ctx->win);
 	ctx->fractal_fn(ctx);
-	draw_axis(ctx);
+	// draw_axis(ctx);
 	mlx_put_image_to_window(ctx->mlx, ctx->win, ctx->img.img, 0, 0);
 }
 
@@ -136,33 +136,38 @@ int	render(t_vars *ctx)
 	}
 	else if (ctx->keyboard.scrollmouseup == TRUE)
     {
+
+		mlx_mouse_get_pos(ctx->mlx,ctx->win,&ctx->keyboard.cursor.x, &ctx->keyboard.cursor.y);
+				
 		// double x = (((double)ctx->keyboard.cursor.x / SCREEN_WIDTH) * (MANDELBROT_XMAX - MANDELBROT_XMIN) - 1.5) * ctx->zoom;
 		// double y = (((double)ctx->keyboard.cursor.y / SCREEN_HEIGHT) * (MANDELBROT_YMAX - MANDELBROT_YMIN) - 1.5) * ctx->zoom;
 		
-		// double x = (((double)ctx->keyboard.cursor.x / SCREEN_WIDTH) - 0.5) * 2;
-		// double y = (((double)ctx->keyboard.cursor.y / SCREEN_HEIGHT) - 0.5) * 2;
+		double x = (((double)ctx->keyboard.cursor.x / SCREEN_WIDTH) - 0.5) * 2;
+		double y = (((double)ctx->keyboard.cursor.y / SCREEN_HEIGHT) - 0.5) * 2;
 
 		// zoompos.x = x - ctx->zoom_x;
 		// zoompos.y = y - ctx->zoom_y;
 
-		double x = 0;
-		double y = 0;
+		// double x = 0;
+		// double y = 0;
 
-		ctx->zoom_x += x * ctx->zoom;
-		ctx->zoom_y += y * ctx->zoom;
+	
+
+		ctx->zoom_x += x * ctx->zoom * 0.2;
+		ctx->zoom_y += y * ctx->zoom * 0.2;
 
 		printf("vecteur direction: [%f, %f]\n", x, y);
 		printf("zoom pos: [%f, %f]\n", ctx->zoom_x, ctx->zoom_y);
 
-		// printf("zoompos.x: %f\n", zoompos.x);
+		// printf("zoompos.x: %f\n", z²oompos.x);
 		// printf("zoompos.y: %f\n", zoompos.y);
 
 		// printf("zoom_x: %f\n", ctx->zoom_x);
 		// printf("zoom_y: %f\n", ctx->zoom_y);
 
 		// getposition cursor
-		// x = (double)ctx->keyboard.cursor.x / SCREEN_WIDTH
-		// y = (double)ctx->keyboard.cursor.y / SCREEN_HEIGHT
+		// x = (double)ctx->keyboard.cursor.x / SCREEN_WIDTH;
+		// y = (double)ctx->keyboard.cursor.y / SCREEN_HEIGHT;
 
 		// realzoomx = MANDELBROT_XMIN + (MANDELBROT_XMAX - MANDELBROT_XMIN) * 0.5;
 		// realzoomy = MANDELBROT_YMIN + (MANDELBROT_YMAX - MANDELBROT_YMIN) * 0.5;
@@ -256,7 +261,7 @@ int	main(int argc, char **argv)
 	ctx.img.addr = mlx_get_data_addr(ctx.img.img, &ctx.img.bits_per_pixel, &ctx.img.line_length,
 								&ctx.img.endian);
 	ctx.fractal_fn(&ctx);
-	draw_axis(&ctx);
+	// draw_axis(&ctx);
 	mlx_put_image_to_window(ctx.mlx, ctx.win, ctx.img.img, 0, 0);
 	mlx_key_hook(ctx.win, key_hook, &ctx);
 	mlx_mouse_hook(ctx.win, mouse_hook, &ctx.keyboard);
