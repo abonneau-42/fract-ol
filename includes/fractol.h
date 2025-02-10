@@ -6,7 +6,7 @@
 /*   By: abonneau <abonneau@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 07:47:17 by abonneau          #+#    #+#             */
-/*   Updated: 2025/02/08 03:26:44 by abonneau         ###   ########.fr       */
+/*   Updated: 2025/02/10 04:44:19 by abonneau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,8 @@
 # include "vector.h"
 # include <time.h>
 
-# define SCREEN_WIDTH 800
-# define SCREEN_HEIGHT 800
+# define SCREEN_WIDTH 300
+# define SCREEN_HEIGHT 300
 # define MAX_ITER 100
 # define COLOR_RANGE (16581375 / MAX_ITER)
 
