@@ -1,13 +1,43 @@
-# **************************************************************************** #
-#                                                                              #
-#                                                         :::      ::::::::    #
-#    Makefile                                           :+:      :+:    :+:    #
-#                                                     +:+ +:+         +:+      #
-#    By: abonneau <abonneau@student.42lyon.fr>      +#+  +:+       +#+         #
-#                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2025/02/04 08:12:50 by abonneau          #+#    #+#              #
-#    Updated: 2025/02/08 01:09:51 by abonneau         ###   ########.fr        #
-#                                                                              #
-# **************************************************************************** #
+CC = cc
+CFLAGS = -Wall -Werror -Wextra -I $(INCLUDES_DIR)
+NAME = fractol
+BUILD_DIR = .build
 
-MINILIBX_FLAGS = -L $(MINILIBX_FOLDER) -lmlx -lXext -lX11 -lm -fastno-math -o3 -march=native
+MINILIBX_NAME = libmlx.a
+MINILIBX_FOLDER = minilibx-linux
+MINILIBX_FLAGS =
+MINILIBS_INCLUDES_DIR =
+
+INCLUDES_DIR = ./includes
+INCLUDES_FILES = fractol.h vector.h
+INCLUDES = $(addprefix $(INCLUDES_DIR)/, $(INCLUDES_FILES))
+
+SRCS_DIR = srcs
+SRCS_FILES =			julia.c \
+						main.c \
+						mandelbrot.c \
+						utils
+
+SRCS = $(addprefix $(SRCS_DIR)/, $(SRCS_FILES))
+OBJS = $(patsubst $(SRCS_DIR)/%.c, $(BUILD_DIR)/%.o, $(SRCS))
+
+all: $(NAME)
+
+$(NAME): $(OBJS)
+	$(CC) $(CFLAGS) $(OBJS) -o $(NAME)
+
+$(BUILD_DIR)/%.o: $(SRCS_DIR)/%.c $(INCLUDES) 
+	@mkdir -p $(@D)
+	$(CC) $(CFLAGS) -c $< -o $@
+
+minilibx
+
+clean:
+	rm -rf $(BUILD_DIR)
+
+fclean: clean
+	rm -rf $(NAME)
+
+re: fclean all
+
+.PHONY: all clean fclean re

@@ -1,24 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utility.c                                          :+:      :+:    :+:   */
+/*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: abonneau <abonneau@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 09:35:42 by abonneau          #+#    #+#             */
-/*   Updated: 2025/02/07 21:44:50 by abonneau         ###   ########.fr       */
+/*   Updated: 2025/02/12 18:27:54 by abonneau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fractol.h"
-
-// void	my_mlx_pixel_put(t_data *data, int x, int y, int color)
-// {
-// 	char	*dst;
-
-// 	dst = data->addr + (y * data->line_length + x * (data->bits_per_pixel / 8));
-// 	*(unsigned int*)dst = color;
-// }
 
 int	is_number(char *str)
 {
@@ -60,8 +52,6 @@ size_t	ft_strlen(const char *s)
 	return (i);
 }
 
-#include <limits.h>  // Pour les constantes MAX et MIN
-
 double	ft_atof(const char *nptr)
 {
 	int		i;
@@ -76,7 +66,6 @@ double	ft_atof(const char *nptr)
 	decimal_part = 0.0;
 	divisor = 10.0;
 
-	// Gérer les signes
 	if (nptr[i] == '-' || nptr[i] == '+')
 	{
 		if (nptr[i] == '-')
@@ -84,14 +73,12 @@ double	ft_atof(const char *nptr)
 		i++;
 	}
 
-	// Partie entière
 	while (nptr[i] >= '0' && nptr[i] <= '9')
 	{
 		result = result * 10 + (nptr[i] - '0');
 		i++;
 	}
 
-	// Gérer la partie décimale
 	if (nptr[i] == '.')
 	{
 		i++;
@@ -103,7 +90,6 @@ double	ft_atof(const char *nptr)
 		}
 	}
 
-	// Retourner le résultat avec le signe
 	return (sign * (result + decimal_part));
 }
 
@@ -120,11 +106,4 @@ int	ft_strcmp(const char *s1, const char *s2)
 		i++;
 	}
 	return ((unsigned char)s1[i] - (unsigned char)s2[i]);
-}
-
-int ft_abs(int x)
-{
-	if (x < 0)
-		return (-x);
-	return (x);
 }

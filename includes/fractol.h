@@ -6,7 +6,7 @@
 /*   By: abonneau <abonneau@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 07:47:17 by abonneau          #+#    #+#             */
-/*   Updated: 2025/02/10 04:44:19 by abonneau         ###   ########.fr       */
+/*   Updated: 2025/02/12 18:32:01 by abonneau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,8 @@
 # include "vector.h"
 # include <time.h>
 
-# define SCREEN_WIDTH 300
-# define SCREEN_HEIGHT 300
+# define SCREEN_WIDTH 1600
+# define SCREEN_HEIGHT 1600
 # define MAX_ITER 100
 # define COLOR_RANGE (16581375 / MAX_ITER)
 
@@ -33,7 +33,6 @@
 
 # define MANDELBROT_XMIN -1.5
 # define MANDELBROT_XMAX 1.5
-
 # define MANDELBROT_YMIN -1.5
 # define MANDELBROT_YMAX 1.5
 
@@ -73,7 +72,7 @@ typedef struct	s_keyboard {
     t_vector    cursor;
 }				t_keyboard;
 
-typedef int (*t_fractal_fn)(t_vars *ctx);  // Déclaration correcte pour le type de la fonction
+typedef void (*t_fractal_fn)(t_vars *ctx);  // Déclaration correcte pour le type de la fonction
 
 typedef struct s_vars {
     void            *mlx;
@@ -100,14 +99,12 @@ typedef struct s_cache {
     double cached_y[SCREEN_HEIGHT];
 } t_cache;
 
-int	mandelbrot(t_vars *ctx);
-int	julia(t_vars *ctx);
+void    mandelbrot(t_vars *ctx);
+void    julia(t_vars *ctx);
 
 double	ft_atof(const char *nptr);
 size_t	ft_strlen(const char *s);
 int		is_number(char *str);
 int		ft_strcmp(const char *s1, const char *s2);
-// void	my_mlx_pixel_put(t_data *data, int x, int y, int color);
-int     ft_abs(int x);
 
 #endif
