@@ -13,19 +13,22 @@
 #ifndef VECTOR_H
 # define VECTOR_H
 
-typedef struct s_dvector{
-    double x;
-    double y;
-}   t_dvector;
+typedef struct s_dvector
+{
+	double	x;
+	double	y;
+}	t_dvector;
 
-typedef struct s_fvector{
-    float x;
-    float y;
-}   t_fvector;
+typedef struct s_fvector
+{
+	float	x;
+	float	y;
+}	t_fvector;
 
-typedef struct s_vector{
-    unsigned int x;
-    unsigned int y;
-}   t_vector;
+typedef struct s_vector
+{
+	unsigned int	x;
+	unsigned int	y;
+}	t_vector;
 
 #endif

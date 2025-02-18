@@ -6,7 +6,7 @@
 /*   By: abonneau <abonneau@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 17:23:33 by abonneau          #+#    #+#             */
-/*   Updated: 2025/02/18 12:46:25 by abonneau         ###   ########.fr       */
+/*   Updated: 2025/02/18 14:02:44 by abonneau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ static inline unsigned int	find_color(const double x0,
 		}
 		i++;
 	}
-	return ((i - MAX_ITER) * COLOR_RANGE);
+	return ((i - MAX_ITER) * (16581375 / MAX_ITER));
 }
 
 static inline void	compute_const_val_x(t_vars *ctx, t_dvector *const_val_x)

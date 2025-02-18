@@ -6,7 +6,7 @@
 /*   By: abonneau <abonneau@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 07:48:48 by abonneau          #+#    #+#             */
-/*   Updated: 2025/02/18 11:11:54 by abonneau         ###   ########.fr       */
+/*   Updated: 2025/02/18 14:06:09 by abonneau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ int	key_hook(int keycode, t_vars *ctx)
 	return (0);
 }
 
-int mouse_hook(int mousecode, int x, int y, t_keyboard *keyboard)
+int	mouse_hook(int mousecode, int x, int y, t_keyboard *keyboard)
 {
 	(void)x;
 	(void)y;
@@ -51,7 +51,7 @@ int mouse_hook(int mousecode, int x, int y, t_keyboard *keyboard)
 		keyboard->scrollmouseup = TRUE;
 	if (mousecode == 5)
 		keyboard->scrollmousedown = TRUE;
-    return (0);
+	return (0);
 }
 
 int	check_number(char *chr, t_vars *ctx, int index)
@@ -71,27 +71,26 @@ int	check_number(char *chr, t_vars *ctx, int index)
 
 int	render(t_vars *ctx)
 {
-    if (ctx->keyboard.scrollmousedown == TRUE)
+	t_vector	cursor;
+
+	if (ctx->keyboard.scrollmousedown == TRUE)
 	{
 		ctx->zoom *= 1.1;
 		ctx->keyboard.scrollmousedown = FALSE;
 		redraw(ctx);
 	}
 	else if (ctx->keyboard.scrollmouseup == TRUE)
-    {
-
-		mlx_mouse_get_pos(ctx->mlx,ctx->win, (int *)&ctx->keyboard.cursor.x, (int *)&ctx->keyboard.cursor.y);
-		
-		double x = (((double)ctx->keyboard.cursor.x / SCREEN_WIDTH) - 0.5) * 2;
-		double y = (((double)ctx->keyboard.cursor.y / SCREEN_HEIGHT) - 0.5) * 2;
-
-		ctx->zoom_x += x * ctx->zoom * 0.2;
-		ctx->zoom_y += y * ctx->zoom * 0.2;
+	{
+		mlx_mouse_get_pos(ctx->mlx,ctx->win, (int *)&cursor.x,
+			(int *)&cursor.y);
+		ctx->zoom_x += ((((double)cursor.x / SCREEN_WIDTH) - 0.5) * 2) * ctx->zoom * 0.2;
+		ctx->zoom_y += ((((double)cursor.y / SCREEN_HEIGHT) - 0.5) * 2) * ctx->zoom * 0.2;
 		ctx->zoom /= 1.1;
 		ctx->keyboard.scrollmouseup = FALSE;
 		redraw(ctx);
-    }
-	if (ctx->keyboard.arrow_left || ctx->keyboard.arrow_right || ctx->keyboard.arrow_top || ctx->keyboard.arrow_bottom)
+	}
+	if (ctx->keyboard.arrow_left || ctx->keyboard.arrow_right
+		|| ctx->keyboard.arrow_top || ctx->keyboard.arrow_bottom)
 	{
 		if (ctx->keyboard.arrow_left == TRUE)
 			ctx->center_x -= 10;
@@ -101,7 +100,6 @@ int	render(t_vars *ctx)
 			ctx->center_y -= 10;
 		if (ctx->keyboard.arrow_bottom == TRUE)
 			ctx->center_y += 10;
-		
 		ctx->keyboard.arrow_left = FALSE;
 		ctx->keyboard.arrow_right = FALSE;
 		ctx->keyboard.arrow_top = FALSE;
@@ -122,11 +120,12 @@ int	main(int argc, char **argv)
 	}
 	if (ft_strcmp(argv[1], "julia") == 0)
 	{
-		if (argv[2] && argv[3] && check_number(argv[2], &ctx, 0) && check_number(argv[3], &ctx, 1))
+		if (argv[2] && argv[3] && check_number(argv[2], &ctx, 0)
+			&& check_number(argv[3], &ctx, 1))
 			ctx.fractal_fn = julia;
 		else
 		{
-		write(1, "./fractol [julia|mandelbrot] [params]\n", 38);
+			write(1, "./fractol [julia|mandelbrot] [params]\n", 38);
 			return (0);
 		}
 	}
@@ -137,7 +136,8 @@ int	main(int argc, char **argv)
 		write(1, "./fractol [julia|mandelbrot] [params]\n", 38);
 		return (0);
 	}
-	ctx.keyboard = (t_keyboard){FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, (t_vector){0, 0}};
+	ctx.keyboard = (t_keyboard){FALSE, FALSE, FALSE, FALSE,
+		FALSE, FALSE, FALSE};
 	ctx.zoom = 1;
 	ctx.zoom_x = 0;
 	ctx.center_x = 0;
@@ -148,8 +148,9 @@ int	main(int argc, char **argv)
 		exit(EXIT_FAILURE);
 	ctx.win = mlx_new_window(ctx.mlx, SCREEN_WIDTH, SCREEN_HEIGHT, argv[1]);
 	ctx.img.img = mlx_new_image(ctx.mlx, SCREEN_WIDTH, SCREEN_HEIGHT);
-	ctx.img.addr = mlx_get_data_addr(ctx.img.img, &ctx.img.bits_per_pixel, &ctx.img.line_length,
-								&ctx.img.endian);
+	ctx.img.addr = mlx_get_data_addr(ctx.img.img, &ctx.img.bits_per_pixel,
+			&ctx.img.line_length,
+			&ctx.img.endian);
 	ctx.fractal_fn(&ctx);
 	mlx_put_image_to_window(ctx.mlx, ctx.win, ctx.img.img, 0, 0);
 	mlx_key_hook(ctx.win, key_hook, &ctx);
@@ -158,4 +159,3 @@ int	main(int argc, char **argv)
 	mlx_loop_hook(ctx.mlx, render, &ctx);
 	mlx_loop(ctx.mlx);
 }
-

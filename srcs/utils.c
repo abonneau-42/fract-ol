@@ -15,8 +15,8 @@
 int	is_number(char *str)
 {
 	int	i;
-	int in_decimal;
-	
+	int	in_decimal;
+
 	i = 0;
 	in_decimal = 0;
 	if (str[i] == '-' || str[i] == '+')
@@ -33,7 +33,7 @@ int	is_number(char *str)
 				return (0);
 			in_decimal = 1;
 			i++;
-			continue;
+			continue ;
 		}
 		if (str[i] < '0' || str[i] > '9')
 			return (0);
@@ -65,20 +65,17 @@ double	ft_atof(const char *nptr)
 	result = 0.0;
 	decimal_part = 0.0;
 	divisor = 10.0;
-
 	if (nptr[i] == '-' || nptr[i] == '+')
 	{
 		if (nptr[i] == '-')
 			sign = -1;
 		i++;
 	}
-
 	while (nptr[i] >= '0' && nptr[i] <= '9')
 	{
 		result = result * 10 + (nptr[i] - '0');
 		i++;
 	}
-
 	if (nptr[i] == '.')
 	{
 		i++;
@@ -89,10 +86,8 @@ double	ft_atof(const char *nptr)
 			i++;
 		}
 	}
-
 	return (sign * (result + decimal_part));
 }
-
 
 int	ft_strcmp(const char *s1, const char *s2)
 {

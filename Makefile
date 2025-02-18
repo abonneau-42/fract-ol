@@ -60,7 +60,8 @@ SRCS_DIR = srcs
 SRCS_FILES = julia.c \
               main.c \
               mandelbrot.c \
-              utils.c
+              utils.c \
+			  mandelbrot_utils.c
 
 SRCS = $(addprefix $(SRCS_DIR)/, $(SRCS_FILES))
 OBJS = $(patsubst $(SRCS_DIR)/%.c, $(BUILD_DIR)/%.o, $(SRCS))
