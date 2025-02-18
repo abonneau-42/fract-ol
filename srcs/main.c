@@ -6,16 +6,11 @@
 /*   By: abonneau <abonneau@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 07:48:48 by abonneau          #+#    #+#             */
-/*   Updated: 2025/02/12 18:06:34 by abonneau         ###   ########.fr       */
+/*   Updated: 2025/02/18 11:11:54 by abonneau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fractol.h"
-
-static void my_mlx_pixel_put2(t_data *data, unsigned int x, unsigned int y, unsigned int color)
-{
-    *(unsigned int*)(data->addr + (y * data->line_length + x * (data->bits_per_pixel >> 3))) = color;
-}
 
 int	close_window(t_vars *ctx)
 {
@@ -50,6 +45,8 @@ int	key_hook(int keycode, t_vars *ctx)
 
 int mouse_hook(int mousecode, int x, int y, t_keyboard *keyboard)
 {
+	(void)x;
+	(void)y;
 	if (mousecode == 4)
 		keyboard->scrollmouseup = TRUE;
 	if (mousecode == 5)
