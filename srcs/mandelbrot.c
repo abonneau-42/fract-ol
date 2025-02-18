@@ -6,7 +6,7 @@
 /*   By: abonneau <abonneau@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 09:32:46 by abonneau          #+#    #+#             */
-/*   Updated: 2025/02/18 14:47:19 by abonneau         ###   ########.fr       */
+/*   Updated: 2025/02/18 14:58:45 by abonneau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,15 +25,15 @@ static inline unsigned int	find_color(const double x0, const double y0)
 	double		temp;
 	int			i;
 
-	oldz = (t_dvector){.x = 0.0, .y = 0.0};
 	z = (t_dvector){.x = 0.0, .y = 0.0};
+	oldz = z;
 	i = 0;
 	while ((z.x * z.x + z.y * z.y) < 4.0 && i < MAX_ITER)
 	{
 		temp = z.x * z.x - z.y * z.y + x0;
 		z.y = 2.0 * z.x * z.y + y0;
 		z.x = temp;
-		if (i % 20 == 0)
+		if (i++ % 20 == 0)
 		{
 			if ((z.x - oldz.x) * (z.x - oldz.x) < 1e-12
 				&& (z.y - oldz.y) * (z.y - oldz.y) < 1e-12)
@@ -41,10 +41,8 @@ static inline unsigned int	find_color(const double x0, const double y0)
 				i = MAX_ITER;
 				break ;
 			}
-			oldz.x = z.x;
-			oldz.y = z.y;
+			oldz = z;
 		}
-		i++;
 	}
 	return ((i - MAX_ITER) * (16581375 / MAX_ITER));
 }

@@ -6,7 +6,7 @@
 /*   By: abonneau <abonneau@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 07:48:48 by abonneau          #+#    #+#             */
-/*   Updated: 2025/02/18 14:06:09 by abonneau         ###   ########.fr       */
+/*   Updated: 2025/02/18 15:10:31 by abonneau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,6 +112,8 @@ int	render(t_vars *ctx)
 int	main(int argc, char **argv)
 {
 	t_vars	ctx;
+	double params[2];
+	ctx.params = params;
 
 	if (argc < 2)
 	{

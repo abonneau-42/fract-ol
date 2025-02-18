@@ -6,7 +6,7 @@
 /*   By: abonneau <abonneau@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 07:47:17 by abonneau          #+#    #+#             */
-/*   Updated: 2025/02/18 14:48:00 by abonneau         ###   ########.fr       */
+/*   Updated: 2025/02/18 15:08:46 by abonneau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ typedef struct s_vars
 	double			zoom_x;
 	double			zoom_y;
 	t_fractal_fn	fractal_fn;
-	double			params[2];
+	double			*params;
 	t_data			img;
 	t_keyboard		keyboard;
 }	t_vars;
@@ -95,10 +95,9 @@ void	mandelbrot(t_vars *ctx);
 void	compute_const_val_x_mdb(t_vars *ctx, t_dvector *const_val_x);
 void	compute_const_val_y_mdb(t_vars *ctx, t_dvector *const_val_y);
 
-
-
-
 void	julia(t_vars *ctx);
+void	compute_const_val_x_julia(t_vars *ctx, t_dvector *const_val_x);
+void	compute_const_val_y_julia(t_vars *ctx, t_dvector *const_val_y);
 
 double	ft_atof(const char *nptr);
 size_t	ft_strlen(const char *s);
