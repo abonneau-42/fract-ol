@@ -6,7 +6,7 @@
 /*   By: abonneau <abonneau@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/19 09:57:36 by abonneau          #+#    #+#             */
-/*   Updated: 2025/02/19 10:27:02 by abonneau         ###   ########.fr       */
+/*   Updated: 2025/02/19 11:20:28 by abonneau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ void	redraw(t_vars *ctx)
 
 int	key_hook(int keycode, t_vars *ctx)
 {
-	if (keycode == KEY_ESC)
+	if (keycode == 65307)
 		close_window(ctx);
 	if (keycode == 65362)
 		ctx->keyboard.arrow_top = TRUE;

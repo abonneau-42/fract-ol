@@ -6,7 +6,7 @@
 /*   By: abonneau <abonneau@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 07:47:17 by abonneau          #+#    #+#             */
-/*   Updated: 2025/02/19 10:32:20 by abonneau         ###   ########.fr       */
+/*   Updated: 2025/02/19 11:23:40 by abonneau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,20 +15,12 @@
 
 # include "../minilibx-linux/mlx.h"
 # include <stdlib.h>
-# include <complex.h>
-# include <stdio.h>
-# include <math.h>
 # include <unistd.h>
-# include <stdint.h>
-# include <pthread.h>
 # include "vector.h"
-# include <time.h>
 
 # define SCREEN_WIDTH 800
 # define SCREEN_HEIGHT 800
 # define MAX_ITER 1000
-
-# define KEY_ESC 65307
 
 # define MANDELBROT_XMIN -1.5
 # define MANDELBROT_XMAX 1.5
