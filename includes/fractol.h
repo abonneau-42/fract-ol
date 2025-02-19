@@ -6,7 +6,7 @@
 /*   By: abonneau <abonneau@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 07:47:17 by abonneau          #+#    #+#             */
-/*   Updated: 2025/02/19 11:23:40 by abonneau         ###   ########.fr       */
+/*   Updated: 2025/02/19 11:27:47 by abonneau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ typedef struct s_keyboard
 	t_bool	scrollmousedown;
 }				t_keyboard;
 
-typedef void	(*t_fractal_fn)(t_vars *ctx);
+typedef void			(*t_fractal_fn)(t_vars *ctx);
 
 typedef struct s_vars
 {
