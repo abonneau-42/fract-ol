@@ -6,7 +6,7 @@
 /*   By: abonneau <abonneau@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 09:35:42 by abonneau          #+#    #+#             */
-/*   Updated: 2025/02/12 18:27:54 by abonneau         ###   ########.fr       */
+/*   Updated: 2025/02/19 10:03:24 by abonneau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,12 +19,10 @@ int	is_number(char *str)
 
 	i = 0;
 	in_decimal = 0;
-	if (str[i] == '-' || str[i] == '+')
-	{
-		if (str[i + 1] == '\0')
-			return (0);
+	if ((str[i] == '-' || str[i] == '+') && str[i + 1] != '\0')
 		i++;
-	}
+	else if (str[i] == '-' || str[i] == '+')
+		return (0);
 	while (str[i])
 	{
 		if (str[i] == '.')
@@ -54,39 +52,30 @@ size_t	ft_strlen(const char *s)
 
 double	ft_atof(const char *nptr)
 {
-	int		i;
-	int		sign;
-	double	result;
-	double	decimal_part;
-	double	divisor;
+	unsigned int	i;
+	int				sign;
+	t_dvector		result;
+	double			divisor;
 
 	i = 0;
 	sign = 1;
-	result = 0.0;
-	decimal_part = 0.0;
+	result = (t_dvector){.x = 0.0, .y = 0.0};
 	divisor = 10.0;
+	if (nptr[i] == '-')
+		sign = -1;
 	if (nptr[i] == '-' || nptr[i] == '+')
-	{
-		if (nptr[i] == '-')
-			sign = -1;
 		i++;
-	}
 	while (nptr[i] >= '0' && nptr[i] <= '9')
+		result.x = result.x * 10 + (nptr[i++] - '0');
+	if (nptr[i++] == '.')
 	{
-		result = result * 10 + (nptr[i] - '0');
-		i++;
-	}
-	if (nptr[i] == '.')
-	{
-		i++;
 		while (nptr[i] >= '0' && nptr[i] <= '9')
 		{
-			decimal_part += (nptr[i] - '0') / divisor;
+			result.y += (nptr[i++] - '0') / divisor;
 			divisor *= 10.0;
-			i++;
 		}
 	}
-	return (sign * (result + decimal_part));
+	return (sign * (result.x + result.y));
 }
 
 int	ft_strcmp(const char *s1, const char *s2)
@@ -101,4 +90,19 @@ int	ft_strcmp(const char *s1, const char *s2)
 		i++;
 	}
 	return ((unsigned char)s1[i] - (unsigned char)s2[i]);
+}
+
+int	is_float(char *chr, t_vars *ctx, int index)
+{
+	double	value;
+
+	if (!is_number(chr))
+		return (0);
+	if (ft_strlen(chr) > 11)
+		return (0);
+	value = ft_atof(chr);
+	if (value < -2147483648 || value > 2147483647)
+		return (0);
+	ctx->params[index] = value;
+	return (1);
 }

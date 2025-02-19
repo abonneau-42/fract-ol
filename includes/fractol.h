@@ -6,7 +6,7 @@
 /*   By: abonneau <abonneau@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 07:47:17 by abonneau          #+#    #+#             */
-/*   Updated: 2025/02/18 15:08:46 by abonneau         ###   ########.fr       */
+/*   Updated: 2025/02/19 10:32:20 by abonneau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,9 +99,16 @@ void	julia(t_vars *ctx);
 void	compute_const_val_x_julia(t_vars *ctx, t_dvector *const_val_x);
 void	compute_const_val_y_julia(t_vars *ctx, t_dvector *const_val_y);
 
+int		close_window(t_vars *ctx);
+void	redraw(t_vars *ctx);
+int		key_hook(int keycode, t_vars *ctx);
+int		mouse_hook(int mousecode, int x, int y, t_keyboard *keyboard);
+void	parse_error_message(void);
+
 double	ft_atof(const char *nptr);
 size_t	ft_strlen(const char *s);
 int		is_number(char *str);
 int		ft_strcmp(const char *s1, const char *s2);
+int		is_float(char *chr, t_vars *ctx, int index);
 
 #endif

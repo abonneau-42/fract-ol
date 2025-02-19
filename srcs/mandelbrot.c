@@ -6,7 +6,7 @@
 /*   By: abonneau <abonneau@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 09:32:46 by abonneau          #+#    #+#             */
-/*   Updated: 2025/02/18 14:58:45 by abonneau         ###   ########.fr       */
+/*   Updated: 2025/02/19 09:24:55 by abonneau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 static inline void	my_mlx_pixel_put(t_data *data, unsigned int x,
 		unsigned int y, unsigned int color)
 {
-	*(unsigned int*)(data->addr + (y * data->line_length + x * 4)) = color;
+	*(unsigned int *)(data->addr + (y * data->line_length + x * 4)) = color;
 }
 
 static inline unsigned int	find_color(const double x0, const double y0)
